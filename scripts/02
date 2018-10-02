@@ -1,3 +1,7 @@
-echo "crontab -l 0 4 * * * apt-get update >> /var/log/update_script.log && apt-get upgrade >> /var/log/update_script.log" >> tmpfile
-sh tmpfile
-rm tmpfile
+sudo touch Update.sh
+sudo chmod 777 Update.sh
+sudo touch /var/log/update_script.log
+sudo chmod 777 /var/log/update_script.log
+echo "sudo apt-get update -y && sudo apt-get upgrade -y >> /var/log/update_script.log" > Update.sh
+sudo mv Update.sh /etc/cron.hourly
+echo "0 4 * * 1 root /etc/cron.hourly/Update.sh" | crontab
