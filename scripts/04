@@ -1,21 +1,19 @@
-GET=/etc/crontab
-BACKUP=/etc/.crontab_backup
+touch ~/mail_me.sh
 
-if [ ! -e $BACKUP ]; then
-echo "Backup does not exist"
-sudo cp $TARGET $BACKUP
-exit 0
+echo"if [ ! -e /etc/t.md5 ]; then
+	md5sum /etc/cronta > ~/t.md5
+	sudo mv ~/t.md5 /etc
 fi
 
-MD5=`md5sum $TARGET | awk '{ print $1 }'`
-MD5_BACKUP=`md5sum $BACKUP | awk '{ print $1 }'`
+md5sum -c --quiet /etc/t.md5 > ~/tmp_for_crontab
 
-if [ -z $MD5 ] | [ -z $MD5_BACKUP ]; then
-echo "MD5 is empty."
+if [ -s ~/tmp_for_crontab ]; then
+	md5sum /etc/cronta > ~/t.md5
+	sudo mv ~/t.md5 /etc
+	echo 'Crontab a ete modifie' | mail -s 'Report' apelissi@student.42.fr
 fi
 
-if [ "$MD5" != "$MD5_BACKUP" ]; then
-echo "Crontab has been modified" | mail -s "Report" root
-fi
+rm ~/tmp_for_crontab" >  ~/mail_me.sh
 
-sudo cp $TARGET $BACKUP
+sudo mv ~/mail_me.sh /etc/cron.daily
+echo "0 0 * * * root /etc/cron.daily/mail_me.sh" | crontab
