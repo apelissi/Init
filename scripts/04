@@ -1,19 +1,19 @@
 touch ~/mail_me.sh
 
 echo"if [ ! -e /etc/t.md5 ]; then
-	md5sum /etc/cronta > ~/t.md5
+	md5sum /etc/crontab > ~/t.md5
 	sudo mv ~/t.md5 /etc
 fi
 
 md5sum -c --quiet /etc/t.md5 > ~/tmp_for_crontab
 
 if [ -s ~/tmp_for_crontab ]; then
-	md5sum /etc/cronta > ~/t.md5
+	md5sum /etc/crontab > ~/t.md5
 	sudo mv ~/t.md5 /etc
 	echo 'Crontab a ete modifie' | mail -s 'Report' apelissi@student.42.fr
 fi
 
-rm ~/tmp_for_crontab" >  ~/mail_me.sh
+rm ~/tmp_for_crontab" > ~/mail_me.sh
 
 sudo mv ~/mail_me.sh /etc/cron.daily
 echo "0 0 * * * root /etc/cron.daily/mail_me.sh" | crontab
